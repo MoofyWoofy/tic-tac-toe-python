@@ -1,4 +1,5 @@
 import random
+import os
 
 """
 Box characters for the layout of the Tic Tac Toe board
@@ -10,7 +11,13 @@ https://en.wikipedia.org/wiki/Tic-tac-toe
 """
 
 
+def clear_terminal():
+    # 'nt' == windows
+    _ = os.system('cls') if os.name == 'nt' else os.system('clear')
+
+
 def display_board(positions):
+    clear_terminal()
     print(f"""
 \t                    
 \t    {positions[6]}  │  {positions[7]}  │  {positions[8]}  
@@ -129,6 +136,7 @@ def player_turn(board_positions, shape='X'):
             continue
         if not 0 < player_input <= 9:
             print("Not a position on the board, try again!")
+            continue
         if board_positions[player_input - 1] == ' ':
             # Placing position on the board
             board_positions[player_input - 1] = shape
@@ -248,6 +256,7 @@ def two_player_game(x_starts):
 
 
 def display_scoreboard(res: dict, width):
+    clear_terminal()
     print(f"""
 \t ┌──────{'─' * width}───────┐
 \t │      {'SCOREBOARD':^{width}}       │
@@ -268,7 +277,9 @@ def main():
         try:
             player_number = int(input('1 or 2 player(s)? [1/2] '))
         except ValueError:
-            pass
+            continue
+        if player_number == 0:  # faster way to exit i
+            exit(0)
 
     # Getting the player(s) name
     if player_number == 1:
